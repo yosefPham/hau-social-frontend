@@ -29,6 +29,21 @@
     display: flex;
 }
 
+.logo-shot {
+    width: 50px;
+}
+.question-signup {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0 0;
+    h4 {
+        margin-left: 5px;
+        color: var(--primary);
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}
 // Actions
 .actions {
     display: flex;
@@ -69,10 +84,10 @@
 }
 
 .user-avatar {
-    width: 32px;
-    height: 32px;
-    object-fit: cover;
-    border-radius: 50%;
+    // width: 32px;
+    // height: 32px;
+    // object-fit: cover;
+    // border-radius: 50%;
     margin-left: 14px;
     cursor: pointer;
 }

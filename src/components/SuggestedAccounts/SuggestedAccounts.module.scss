@@ -14,13 +14,6 @@
     cursor: pointer;
 }
 
-.avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
 .item-info {
     flex: 1;
     margin-left: 12px;
@@ -48,6 +41,6 @@
     padding: 8px;
     font-size: 1.4rem;
     font-weight: 700;
-    color: #fe2c55;
+    color: var(--primary);
     cursor: pointer;
 }

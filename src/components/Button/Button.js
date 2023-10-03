@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 import styles from './Button.module.scss';
+import { LoadingOutlined } from '@ant-design/icons';
+import { useState } from 'react';
 
 const cx = classNames.bind(styles);
 
@@ -20,8 +22,10 @@ function Button({
     leftIcon,
     rightIcon,
     onClick,
+    isloading,
     ...passProps
 }) {
+    const [loading, setLoading] = useState(false || isloading);
     let Comp = 'button';
     const props = {
         onClick,
@@ -59,6 +63,7 @@ function Button({
     return (
         <Comp className={classes} {...props}>
             {leftIcon && <span className={cx('icon')}>{leftIcon}</span>}
+            {loading && <LoadingOutlined style={{ fontSize: 16, marginRight: 5 }} />}
             <span className={cx('title')}>{children}</span>
             {rightIcon && <span className={cx('icon')}>{rightIcon}</span>}
         </Comp>

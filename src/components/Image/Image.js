@@ -3,22 +3,23 @@ import { useState, forwardRef } from 'react';
 import classNames from 'classnames';
 import images from '~/assets/images';
 import styles from './Image.module.scss';
+import { Avatar } from 'antd';
 
-const Image = forwardRef(({ src, alt, className, fallback: customFallback = images.noImage, ...props }, ref) => {
+const Image = forwardRef(({ src, alt, className, fallback: customFallback = images.noImage, size, ...props }, ref) => {
     const [fallback, setFallback] = useState('');
-
     const handleError = () => {
         setFallback(customFallback);
     };
 
     return (
-        <img
+        <Avatar
             className={classNames(styles.wrapper, className)}
             ref={ref}
-            src={fallback || src}
+            src={src ?? fallback}
             alt={alt}
             {...props}
             onError={handleError}
+            size={size || 'large'}
         />
     );
 });

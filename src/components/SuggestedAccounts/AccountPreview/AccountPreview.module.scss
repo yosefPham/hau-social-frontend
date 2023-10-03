@@ -27,6 +27,10 @@
 
 .nickname {
     font-size: 1.8rem;
+    cursor: pointer;
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
 .check {

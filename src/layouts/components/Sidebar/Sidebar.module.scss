@@ -1,5 +1,103 @@
+html *::-webkit-scrollbar {
+    border-radius: 0;
+    width: 8px;
+}
+
+html *::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.15);
+}
 .wrapper {
-    width: 356px;
-    padding: 20px 0 26px 8px;
+    width: 300px;
+    padding: 0 0 26px 8px;
     margin-left: -18px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    z-index: 99;
+    height: 100%;
+}
+
+//Discover
+
+.discover {
+    border-top: 1px solid #e3e3e4;
+}
+
+.header-discover {
+    padding: 8px;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.list-hashtag {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 8px;
+}
+
+.hashtag {
+    display: flex;
+    padding: 8px 12px;
+    margin: 0 8px 12px 0;
+    border: 1px solid rgba(22, 24, 35, 0.2);
+    min-width: 91px;
+    height: 24px;
+    border-radius: 999px;
+    background: rgb(255, 255, 255);
+    cursor: pointer;
+    overflow: hidden;
+
+    &:hover {
+        background: rgba(22, 24, 35, 0.03);
+    }
+}
+
+.hashtag-content {
+    display: flex;
+    align-items: center;
+}
+
+.hashtag-icon {
+    width: 14px;
+    height: 14px;
+    color: #707380;
+}
+.hashtag-name {
+    line-height: 21px;
+    font-size: 1.4rem;
+    color: rgba(22, 24, 35, 0.5);
+    padding-left: 6px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+//Footer
+.footer {
+    border-top: 1px solid #e3e3e4;
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    margin-bottom: 50px;
+}
+
+.tiktok-link {
+    font-size: 1.2rem;
+    color: rgba(124, 129, 158, 0.5);
+    font-weight: 600;
+    line-height: 17px;
+    display: inline-block;
+    margin-top: 5px;
+
+    a {
+        color: rgba(22, 24, 35, 0.5);
+        margin: 5px 6px 0 0;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+.scroll-bar {
+    overflow-y: scroll;
 }

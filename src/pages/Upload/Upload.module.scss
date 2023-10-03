@@ -1,0 +1,16 @@
+.wrapper {
+    background-color: var(--default-background-color);
+    display: flex;
+    justify-content: center;
+    height: 700px;
+    margin-top: var(--default-layout-header-height);
+}
+
+.form-upload {
+    width: 60%;
+    background-color: #fff;
+    box-shadow: var(--box-shadow);
+    border-radius: 8px;
+    background-color: var(--bg-color-primary);
+    padding: 24px 40px;
+}
