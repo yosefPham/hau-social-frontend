@@ -3,13 +3,39 @@ import { ip3 } from '~/utils/httpRequest';
 
 const userId = localStorage.userId;
 
-const getListPost = async (page, limit) => {
+const getListPost = async (limit) => {
     try {
         const res = await axios.get(`${ip3}/post`, {
             params: {
-                page,
                 limit,
                 userId,
+            },
+        });
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const getListPostMyUser = async (limit, userId) => {
+    try {
+        const res = await axios.get(`${ip3}/post/post-myuser`, {
+            params: {
+                limit,
+                userId,
+            },
+        });
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const getOnePost = async (postId) => {
+    try {
+        const res = await axios.get(`${ip3}/post/${postId}`, {
+            params: {
+                userId
             },
         });
         return res;
@@ -44,4 +70,4 @@ const deletePost = async (id) => {
     }
 };
 
-export { getListPost, updatePost, deletePost, postPost };
+export { getListPost, updatePost, deletePost, postPost, getOnePost, getListPostMyUser };

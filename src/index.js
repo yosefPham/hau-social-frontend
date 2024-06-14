@@ -31,6 +31,10 @@ root.render(
                             horizontalItemPadding: '12px 40px',
                             titleFontSize: '16px',
                         },
+                        Carousel: {
+                            dotHeight: 6,
+                            dotActiveWidth: 30
+                        },
                     },
                 }}
             >

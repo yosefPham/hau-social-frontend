@@ -1,7 +1,14 @@
 .wrapper {
     display: flex;
     width: 100%;
-    height: 715px;
+    max-height: 715px;
+    overflow: hidden;
+    
+    .image {
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+    }
 }
 .render-video {
     width: 65%;
@@ -58,6 +65,7 @@
         font-size: 12px;
         font-weight: 600;
     }
+    cursor: pointer;
 }
 .icon {
     display: flex;
@@ -124,4 +132,7 @@
 
 .info {
     margin-left: 5px;
+}
+.isActive {
+    color: var(--primary);
 }

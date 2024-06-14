@@ -6,54 +6,210 @@
 
 .user-profile {
     width: 60%;
-}
-.header-user-profile {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-}
-
-.header-profile {
-    display: flex;
-    align-items: flex-start;
-}
-
-.header-profile-name {
-    margin-left: 1.5rem;
-    h1 {
-        line-height: 3rem;
-    }
-    h4 {
-        margin: 0.8rem 0;
-    }
-}
-
-.user-count {
-    display: flex;
-    margin: 1rem 0 0 1rem;
-    p {
+    .header-user-profile {
         display: flex;
-        margin-right: 1rem;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+    
+    .header-profile {
+        display: flex;
+        align-items: flex-start;
+    }
+    
+    .header-profile-name {
+        margin-left: 1.5rem;
+        h1 {
+            line-height: 3rem;
+        }
         h4 {
-            margin-right: 0.3rem;
+            margin: 0.8rem 0;
+        }
+    }
+    
+    .user-count {
+        display: flex;
+        margin: 1rem 0 0 1rem;
+        p {
+            display: flex;
+            margin-right: 1rem;
+            h4 {
+                margin-right: 0.3rem;
+            }
+        }
+    }
+    .text-note {
+        color: var(--default-color-text-note);
+    }
+    .bio {
+        margin: 1rem 0 0 1rem;
+        font-size: 1.6rem;
+    }
+    .form-item {
+        margin-bottom: 0;
+    }
+    .input {
+        background-color: rgba(22, 24, 35, 0.06);
+    }
+    .ant-form-item-control-input-content {
+        display: flex;
+        justify-content: flex-end;
+        flex-direction: row;
+    }
+}
+
+
+
+.account-item {
+    display: flex;
+    border-bottom: 1px solid #e3e3e4;
+    padding: 30px 0 20px;
+    justify-content: center;
+    
+    
+}
+
+.avatar {
+    display: block;
+    img {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+    }
+}
+.image {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+}
+.user {
+    margin-left: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.user-body {
+    min-width: 550px;
+}
+.user-post-account {
+    display: flex;
+    justify-content: center;
+}
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.nickname {
+    font-size: 1.8rem;
+    // font-weight: 500;
+}
+
+.check {
+    color: rgb(32, 213, 236);
+    padding-left: 2px;
+    height: 14px;
+    width: 14px;
+}
+
+.name {
+    font-size: 1.4rem;
+    padding-left: 5px;
+}
+
+.information {
+    max-width: 510px;
+    font-weight: 600;
+    color: rgba(22, 24, 35, 1);
+
+    span {
+        font-weight: 400;
+    }
+
+    a {
+        cursor: pointer;
+        margin-right: 5px;
+        &:hover {
+            text-decoration: underline;
         }
     }
 }
-.text-note {
-    color: var(--default-color-text-note);
+
+.music-name {
+    .icon-music {
+        width: 13px;
+        height: 13px;
+        margin-right: 8px;
+    }
+    a {
+        font-weight: 600;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 }
-.bio {
-    margin: 1rem 0 0 1rem;
-    font-size: 1.6rem;
+
+.button-fl {
+    margin-top: 10px;
+    height: 28px;
 }
-.form-item {
-    margin-bottom: 0;
-}
-.input {
-    background-color: rgba(22, 24, 35, 0.06);
-}
-.ant-form-item-control-input-content {
+
+.user-video {
     display: flex;
-    justify-content: flex-end;
-    flex-direction: row;
+    align-items: flex-end;
+}
+.video {
+    width: 51%;
+    height: 100%;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-right: 20px;
+    position: relative;
+}
+.control-video {
+    border-radius: 40px;
+}
+
+.button-play {
+    left: 12px;
+    position: absolute;
+    bottom: 12px;
+    padding: 10px;
+    width: 40px;
+    height: 40px;
+    -webkit-transition: opacity 0.2s;
+    transition: opacity 0.2s;
+    opacity: 0;
+    bottom: 26px;
+    cursor: pointer;
+}
+.video:hover {
+    .button-play {
+        opacity: 1;
+    }
+}
+
+.type {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 6px;
+    margin-bottom: 8px;
+    p {
+        font-size: 12px;
+        font-weight: 600;
+    }
+}
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: rgba(22, 24, 35, 0.06);
+    .icon-interact {
+        width: 21px;
+        height: 19px;
+    }
 }

@@ -17,6 +17,7 @@ import config from '~/config';
 import { getListUser, getUser } from '~/services/userServive';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { UserContext } from '~/context/UserContext';
+import { message } from 'antd';
 
 const cx = classNames.bind(styles);
 
@@ -28,9 +29,13 @@ function Sidebar() {
     }, []);
 
     const handleUserFollow = async (id, type) => {
-        const res = await handleFollow(id, type);
-        if (res?.data?.status === 200) {
-            getDataUser();
+        if (localStorage.userId) {
+            const res = await handleFollow(id, type);
+            if (res?.data?.status === 200) {
+                getDataUser();
+            }
+        } else {
+            message.warning("Vui lòng đăng nhập để thực hiện hành động này!")
         }
     };
 
@@ -43,6 +48,13 @@ function Sidebar() {
         }
         console.log('res', result);
     };
+
+    const getAllUsers = async () => {
+        const result = await getListUser(1, 1000);
+        if (result?.data?.status === 200) {
+            setSuggestedUser(result?.data?.result);
+        }
+    }
 
     return (
         <aside className={cx('wrapper')}>
@@ -62,8 +74,8 @@ function Sidebar() {
                 <MenuItem title="LIVE" to={config.routes.live} icon={<LiveIcon />} activeIcon={<LiveActiveIcon />} />
             </Menu>
             <div className={cx('scroll-bar')}>
-                <SuggestedAccounts label="Suggested accounts" data={suggestedUser} handleFollow={handleUserFollow} />
-                <SuggestedAccounts label="Following accounts" data={suggestedUser} handleFollow={handleUserFollow} />
+                <SuggestedAccounts label="Tài khoản đề xuất" data={suggestedUser} handleFollow={handleUserFollow} getAllUsers={getAllUsers} />
+                {/* <SuggestedAccounts label="Following accounts" data={suggestedUser} handleFollow={handleUserFollow} /> */}
                 <div className={cx('discover')}>
                     <p className={cx('header-discover')}>Discover</p>
                     <div className={cx('list-hashtag')}>

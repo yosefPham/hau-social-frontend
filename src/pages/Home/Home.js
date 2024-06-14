@@ -9,24 +9,69 @@ import Button from '~/components/Button';
 import * as videoService from '~/services/videoService';
 import ItemRender from '~/components/Render';
 import { getListPost } from '~/services/postService';
+import { Skeleton } from 'antd';
 const cx = classNames.bind(styles);
 
 function Home() {
     const [suggestedUser, setSuggestedUser] = useState([]);
+    const [limit, setLimit] = useState(7);
+    const [total, setTotal] = useState();
+    const [isLoading, setIsLoading] = useState(false);
+    const [isOver, setIsOver] = useState(false);
     useEffect(() => {
-        // videoService
-        //     .video()
-        //     .then((data) => {
-        //         setSuggestedUser(data);
-        //     })
-        //     .catch((error) => console.log(error));
         getInitData();
     }, []);
+
+    useEffect(() => {
+        getMoreData();
+    }, [limit]);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const isBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight;
+            if (isBottom && !isLoading) {
+                setLimit(limit + 7)
+            }
+        };
+    
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, [isLoading]);
     const getInitData = async () => {
-        const res = await getListPost(1, 7);
-        setSuggestedUser(res?.data?.result);
-        console.log('res', res);
+        setIsLoading(true)
+        try {
+            const res = await getListPost(limit);
+            setTotal(res?.data?.total)
+            setSuggestedUser(res?.data?.result);
+            if (res?.data?.result?.length < limit) {
+                setIsOver(true)
+            }
+        } catch (err) {
+
+        } finally {
+            setIsLoading(false);
+        }
     };
+    const getMoreData = async () => {
+        setIsLoading(true)
+        console.log('Loading more data')
+        try {
+            if (!isOver) {
+                const res = await getListPost(limit);
+                setTotal(res?.data?.total)
+                setSuggestedUser(res?.data?.result);
+                if (res?.data?.result?.length < limit) {
+                    setIsOver(true)
+                }
+            }
+        } catch (err) {
+
+        } finally {
+            setIsLoading(false);
+        }
+    }
     return (
         <aside className={cx('wrapper')}>
             {suggestedUser?.map((data) => {
@@ -43,7 +88,7 @@ function Home() {
                                         />
                                         <p className={cx('nickname')}>
                                             <strong>{data?.userId?.nickname}</strong>
-                                            {data.userId.tick && (
+                                            {data?.userId?.tick && (
                                                 <FontAwesomeIcon className={cx('check')} icon={faCheckCircle} />
                                             )}
                                         </p>
@@ -66,11 +111,12 @@ function Home() {
                                     Follow
                                 </Button>
                             </div>
-                            <ItemRender data={data} />
+                            <ItemRender data={data} getInitData={getInitData}/>
                         </div>
                     </div>
                 );
             })}
+            {!isOver && <Skeleton active={isLoading} style={{width: "60%", marginTop: '20px'}} />}
         </aside>
     );
 }

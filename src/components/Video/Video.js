@@ -44,8 +44,8 @@ const Video = ({ data, playing, currentTime, size, defaultVolume, onHandleVideo,
                 <div onClick={handlePlayVideo}>
                     <ReactPlayer
                         className="video"
-                        poster={data?.thumb_url}
-                        url={data?.file_url}
+                        poster={data?.fileList[0]}
+                        url={data?.fileList[0]}
                         width="100%"
                         height="100%"
                         playing={isPlaying ?? play}

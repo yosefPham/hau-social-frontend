@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import classNames from 'classnames/bind';
 import { EditOutlined, LockOutlined, ShareAltOutlined, UploadOutlined } from '@ant-design/icons';
-import { Button, Col, Divider, Form, Input, message, Modal, Row, Tabs, Upload } from 'antd';
+import { Button, Col, Divider, Empty, Form, Input, message, Modal, Row, Tabs, Upload } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { getUser, updateUser } from '~/services/userServive';
@@ -11,6 +11,14 @@ import TabPane from 'antd/es/tabs/TabPane';
 import Video from '~/components/Video/Video';
 import { UserContext } from '~/context/UserContext';
 
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle, faMusic } from '@fortawesome/free-solid-svg-icons';
+
+import * as videoService from '~/services/videoService';
+import ItemRender from '~/components/Render';
+import { getListPostMyUser } from '~/services/postService';
+import { Skeleton } from 'antd';
 const cx = classNames.bind(styles);
 
 function Profile() {
@@ -28,6 +36,11 @@ function Profile() {
     const [nickname, setNickname] = useState('');
     const { handleFollow } = useContext(UserContext);
     const [status, setStatus] = useState('Follow');
+    const [suggestedUser, setSuggestedUser] = useState([]);
+    const [limit, setLimit] = useState(7);
+    const [total, setTotal] = useState();
+    const [isLoading, setIsLoading] = useState(false);
+    const [isOver, setIsOver] = useState(false);
     const handleTogglePlay = (videoIndex) => {
         if (isPlaying && currentVideoIndex === videoIndex) {
             setIsPlaying(false);
@@ -39,19 +52,26 @@ function Profile() {
     };
     useEffect(() => {
         getDataUser();
+        getInitData();
     }, [id]);
 
+    useEffect(() => {
+        getMoreData();
+    }, [limit]);
     const handleUserFollow = async (id) => {
         if (status === 'Tin nhắn') {
             navigate(`/`);
         } else {
-            const res = await handleFollow(id, status);
-            if (res?.data?.status === 200) {
-                getDataUser();
+            if (localStorage.userId) {
+                const res = await handleFollow(id, status);
+                if (res?.data?.status === 200) {
+                    getDataUser();
+                }
+            } else {
+                message.warning("Vui lòng đăng nhập để thực hiện hành động này!")
             }
         }
     };
-    console.log('id', location?.state?.userId, localStorage.userId);
     const getDataUser = async () => {
         const res = await getUser(location?.state?.userId ?? localStorage.userId, localStorage.userId);
         setNickname(res?.data?.result?.nickname);
@@ -85,6 +105,54 @@ function Profile() {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const isBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight;
+            if (isBottom && !isLoading) {
+                setLimit(limit + 7)
+            }
+        };
+    
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, [isLoading]);
+
+    const getInitData = async () => {
+        setIsLoading(true)
+        try {
+            const res = await getListPostMyUser(limit, location?.state?.userId ?? localStorage.userId);
+            setTotal(res?.data?.total)
+            setSuggestedUser(res?.data?.result);
+            if (res?.data?.result?.length < limit) {
+                setIsOver(true)
+            }
+        } catch (err) {
+
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const getMoreData = async () => {
+        setIsLoading(true)
+        try {
+            if (!isOver) {
+                const res = await getListPostMyUser(limit, location?.state?.userId ?? localStorage.userId);
+                setTotal(res?.data?.total)
+                setSuggestedUser(res?.data?.result);
+                if (res?.data?.result?.length < limit) {
+                    setIsOver(true)
+                }
+            }
+        } catch (err) {
+
+        } finally {
+            setIsLoading(false);
+        }
+    }
     return (
         <aside className={cx('wrapper')}>
             <div className={cx('user-profile')}>
@@ -123,77 +191,46 @@ function Profile() {
                 </div>
                 <p className={cx('bio')}>{user?.bio}</p>
             </div>
-            <Tabs defaultActiveKey="0" onTabClick={() => setIsPlaying(false)}>
-                <TabPane tab={<p>Video</p>} key="0">
-                    <Row gutter={[0, 10]}>
-                        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((video, index) => {
-                            return (
-                                <Col span={4}>
-                                    <Video
-                                        index={index}
-                                        data={user}
-                                        size="small"
-                                        defaultVolume={0}
-                                        isPlaying={isPlaying && currentVideoIndex === index}
-                                        onHandleVideo={handleTogglePlay}
-                                        isPage={true}
-                                    />
-                                </Col>
-                            );
-                        })}
-                    </Row>
-                </TabPane>
-                <TabPane
-                    tab={
-                        <p>
-                            <LockOutlined />
-                            Yêu thích
-                        </p>
-                    }
-                    key="1"
-                >
-                    <Row gutter={[0, 10]}>
-                        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((video, index) => {
-                            return (
-                                <Col span={4}>
-                                    <Video
-                                        index={index + 200}
-                                        data={video}
-                                        size="small"
-                                        defaultVolume={0}
-                                        isPlaying={isPlaying && currentVideoIndex === index + 200}
-                                        onHandleVideo={handleTogglePlay}
-                                    />
-                                </Col>
-                            );
-                        })}
-                    </Row>
-                </TabPane>
-                <TabPane
-                    tab={
-                        <p>
-                            <LockOutlined />
-                            Đã thích
-                        </p>
-                    }
-                    key="2"
-                >
-                    <Row gutter={[0, 10]}>
-                        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((video, index) => {
-                            return (
-                                <Col span={4}>
-                                    <Video
-                                        index={index + 100}
-                                        data={video}
-                                        size="small"
-                                        defaultVolume={0}
-                                        isPlaying={isPlaying && currentVideoIndex === index + 100}
-                                        onHandleVideo={handleTogglePlay}
-                                    />
-                                </Col>
-                            );
-                        })}
-                    </Row>
+            <Tabs centered defaultActiveKey="0" onTabClick={() => setIsPlaying(false)}>
+                <TabPane tab={<p>Bài đăng</p>} key="0">
+                    {suggestedUser?.map((data) => {
+                        return (
+                            <div key={data.id} className={cx('account-item')}>
+                                <div className={cx('user')}>
+                                    <div className={cx('user-post-account')}>
+                                        <div className={cx('user-body')}>
+                                            <div className={cx('user-info')}>
+                                                <Image
+                                                    src={data?.userId?.avatar}
+                                                    size={'large'}
+                                                    style={{ marginRight: '10px' }}
+                                                />
+                                                <p className={cx('nickname')}>
+                                                    <strong>{data?.userId?.nickname}</strong>
+                                                    {data?.userId?.tick && (
+                                                        <FontAwesomeIcon className={cx('check')} icon={faCheckCircle} />
+                                                    )}
+                                                </p>
+                                                <p className={cx('name')}>{data?.userId?.fullname}</p>
+                                            </div>
+                                            <div className={cx('information')}>
+                                                <span>{data?.description}</span>
+                                            </div>
+                                            {data?.music && (
+                                                <h4 className={cx('music-name')}>
+                                                    <FontAwesomeIcon className={cx('icon-music')} icon={faMusic} />
+                                                    <a href="">{data?.music}</a>
+                                                </h4>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <ItemRender data={data} getInitData={getInitData}/>
+                                </div>
+                            </div>
+                        );
+                    })}
+                    {suggestedUser?.length  === 0 && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Không có bài đăng nào" />}
+                    {!isOver && <Skeleton active={isLoading} style={{width: "60%", marginTop: '20px'}} />}
                 </TabPane>
             </Tabs>
             <Modal
